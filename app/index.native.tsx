@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { runOnJS } from 'react-native-worklets';
 import {
   Camera,
@@ -17,6 +17,8 @@ export default function HomeScreen() {
   const [yellow, setYellow] = useState(false);
   const [debug, setDebug] = useState<DebugInfo | null>(null);
 
+  const { width: screenW, height: screenH } = Dimensions.get('window');
+
   const onFrame = useCallback(
     (frame: Frame) => {
       'worklet';
@@ -31,6 +33,9 @@ export default function HomeScreen() {
       const cx = Math.floor(frame.width / 2);
       const cy = Math.floor(frame.height / 2);
 
+      const scale = Math.min(frame.width / screenW, frame.height / screenH);
+      const half = Math.max(1, Math.round(15 * scale));
+
       // 'rgb' target format delivers BGRA on iOS, RGBA on Android
       const isBGRA = frame.pixelFormat === 'rgb-bgra-8-bit';
       const isRGB = frame.pixelFormat === 'rgb-rgb-8-bit';
@@ -40,8 +45,8 @@ export default function HomeScreen() {
       let totalG = 0;
       let totalB = 0;
 
-      for (let dy = -2; dy <= 2; dy++) {
-        for (let dx = -2; dx <= 2; dx++) {
+      for (let dy = -half; dy <= half; dy++) {
+        for (let dx = -half; dx <= half; dx++) {
           const i = (cy + dy) * stride + (cx + dx) * bpp;
           if (isBGRA) {
             totalB += data[i];
@@ -55,9 +60,10 @@ export default function HomeScreen() {
         }
       }
 
-      const r = totalR / 25;
-      const g = totalG / 25;
-      const b = totalB / 25;
+      const count = (half * 2 + 1) * (half * 2 + 1);
+      const r = totalR / count;
+      const g = totalG / count;
+      const b = totalB / count;
       const max = Math.max(r, g, b);
       const saturation = max === 0 ? 0 : (max - Math.min(r, g, b)) / max;
       const hue = rgbToHue(r, g, b);
@@ -98,8 +104,7 @@ export default function HomeScreen() {
         isActive
         outputs={[frameOutput]}
       />
-      <View style={styles.crosshairH} />
-      <View style={styles.crosshairV} />
+      <View style={styles.sampleBox} />
       <Text style={[styles.label, yellow && styles.yellowText]}>
         {yellow ? 'yellow' : 'not yellow'}
       </Text>
@@ -115,17 +120,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  crosshairH: {
+  sampleBox: {
     position: 'absolute',
-    width: 24,
-    height: 1.5,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-  },
-  crosshairV: {
-    position: 'absolute',
-    width: 1.5,
-    height: 24,
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    width: 30,
+    height: 30,
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.8)',
   },
   label: {
     position: 'absolute',

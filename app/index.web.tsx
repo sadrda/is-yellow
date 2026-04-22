@@ -41,7 +41,10 @@ export default function HomeScreen() {
           ctx.drawImage(video, 0, 0);
           const cx = Math.floor(video.videoWidth / 2);
           const cy = Math.floor(video.videoHeight / 2);
-          const { data } = ctx.getImageData(cx - 2, cy - 2, 5, 5);
+          const scale = Math.min(video.videoWidth / window.innerWidth, video.videoHeight / window.innerHeight);
+          const half = Math.max(1, Math.round(15 * scale));
+          const size = half * 2 + 1;
+          const { data } = ctx.getImageData(cx - half, cy - half, size, size);
 
           let totalR = 0, totalG = 0, totalB = 0;
           for (let i = 0; i < data.length; i += 4) {
@@ -83,8 +86,7 @@ export default function HomeScreen() {
       <video ref={videoRef} style={videoStyle} playsInline muted />
       {/* @ts-ignore – web-only HTML element */}
       <canvas ref={canvasRef} style={{ display: 'none' }} />
-      <View style={styles.crosshairH} />
-      <View style={styles.crosshairV} />
+      <View style={styles.sampleBox} />
       <Text style={[styles.label, yellow && styles.yellowText]}>
         {yellow ? 'yellow' : 'not yellow'}
       </Text>
@@ -109,17 +111,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  crosshairH: {
+  sampleBox: {
     position: 'absolute',
-    width: 24,
-    height: 1.5,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-  },
-  crosshairV: {
-    position: 'absolute',
-    width: 1.5,
-    height: 24,
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    width: 30,
+    height: 30,
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.8)',
   },
   label: {
     position: 'absolute',

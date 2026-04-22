@@ -1,5 +1,5 @@
 export const YELLOW = {
-  hueMin: 35,
+  hueMin: 40,
   hueMax: 70,
   satMin: 0.2,
   maxMin: 80,
