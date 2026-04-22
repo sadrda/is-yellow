@@ -16,7 +16,6 @@
     },
     "android": {
       "permissions": [
-        "android.permission.CAMERA",
         "android.permission.CAMERA"
       ],
       "adaptiveIcon": {
@@ -51,6 +50,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "37d24fa9-901d-4d89-add5-80673cd305c9"
+      }
     }
   }
 }

@@ -3,7 +3,13 @@
     "allow": [
       "Bash(node *)",
       "Bash(npx tsc *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(npm info *)",
+      "Bash(npm pack *)",
+      "Bash(npm view *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); versions=d.get\\('versions',[]\\); print\\('All versions:', versions[-10:]\\)\")",
+      "Bash(python3 -c ' *)",
+      "Bash(npm install *)"
     ]
   }
 }
