@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Purpose
 
-**is-yellow** is a mobile app that determines whether what the camera sees is yellow. It displays a live camera feed, samples the center 5×5 pixels, averages their hue, and renders either **"yellow"** or **"not yellow"** below the center of the frame in real time. The app is mobile-only (camera access is not available on web).
+**is-yellow** is a mobile app that determines whether what the camera sees is yellow. It displays a live camera feed, samples the center pixels, averages their hue, and renders either **"yellow"** or **"not yellow"** below the center of the frame in real time. The app is mobile-only (camera access is not available on web).
 
 ## Commands
 
