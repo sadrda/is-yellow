@@ -16,5 +16,5 @@ export function isYellow(r: number, g: number, b: number): boolean {
   const max = Math.max(r, g, b);
   const saturation = max === 0 ? 0 : (max - Math.min(r, g, b)) / max;
   const hue = rgbToHue(r, g, b);
-  return hue >= 30 && hue <= 70 && saturation > 0.1 && max > 80 && r >= g * 0.85;
+  return hue >= 35 && hue <= 70 && saturation > 0.2 && max > 80 && r >= g * 0.8;
 }
