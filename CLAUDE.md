@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Purpose
+
+**is-yellow** is a mobile app that determines whether what the camera sees is yellow. It displays a live camera feed, samples the center 5×5 pixels, averages their hue, and renders either **"yellow"** or **"not yellow"** below the center of the frame in real time. The app is mobile-only (camera access is not available on web).
+
 ## Commands
 
 ```bash
@@ -11,7 +15,6 @@ npm run android      # Start with Android emulator
 npm run ios          # Start with iOS simulator
 npm run web          # Start with web browser
 npm run lint         # Run ESLint via expo lint
-npm run reset-project  # Move starter code to app-example/ and create blank app/
 ```
 
 There is no test runner configured.
@@ -22,12 +25,8 @@ This is an **Expo Router** app using file-based routing. The entry point is `exp
 
 ### Routing structure
 
-- `app/_layout.tsx` — root layout: wraps the app in React Navigation's `ThemeProvider` (auto light/dark), registers a `Stack` with `(tabs)` and `modal` screens.
-- `app/(tabs)/_layout.tsx` — tab navigator with two tabs: `index` (Home) and `explore`.
-- `app/(tabs)/index.tsx`, `app/(tabs)/explore.tsx` — the two tab screens.
-- `app/modal.tsx` — modal screen accessible from any tab.
-
-The `unstable_settings.anchor` in the root layout anchors deep links to the `(tabs)` group.
+- `app/_layout.tsx` — root layout: wraps the app in React Navigation's `ThemeProvider` (auto light/dark) and a `Stack` with `headerShown: false`.
+- `app/index.tsx` — the single screen; this is where the camera logic lives.
 
 ### Theming
 
@@ -42,9 +41,6 @@ The `useColorScheme` hook has a platform split: `hooks/use-color-scheme.ts` (nat
 ### Shared components
 
 - `ThemedText` / `ThemedView` — auto-colored wrappers; `ThemedText` accepts a `type` prop (`default`, `title`, `defaultSemiBold`, `subtitle`, `link`).
-- `IconSymbol` — uses SF Symbols on iOS (`components/ui/icon-symbol.ios.tsx`) and falls back to Material Icons on Android/web (`components/ui/icon-symbol.tsx`). Icon names are SF Symbol names; add new mappings to the `MAPPING` object in the non-iOS file.
-- `HapticTab` — tab bar button wrapper that fires haptic feedback on press.
-- `ParallaxScrollView` — scroll view with a parallax header image region.
 
 ### Path aliases
 
@@ -52,7 +48,7 @@ The `useColorScheme` hook has a platform split: `hooks/use-color-scheme.ts` (nat
 
 ### Platform-specific files
 
-Expo resolves `.ios.tsx` before `.tsx`. Use this pattern (as `icon-symbol` does) when a component needs a fully different native implementation.
+Expo resolves `.ios.tsx` before `.tsx`. Use this pattern when a component needs a fully different native implementation (e.g. `use-color-scheme.web.ts` for the web hydration guard).
 
 ### Notable config
 
