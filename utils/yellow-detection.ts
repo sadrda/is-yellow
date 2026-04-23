@@ -1,8 +1,8 @@
 export const YELLOW = {
-  hueMin: 40,
+  hueMin: 35,
   hueMax: 70,
-  satMin: 0.2,
-  maxMin: 80,
+  satMin: 0.3,
+  maxMin: 100,
   rGRatio: 0.8,
 } as const;
 
